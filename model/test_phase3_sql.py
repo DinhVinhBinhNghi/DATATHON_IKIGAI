@@ -1,0 +1,10 @@
+from src.preagg.aggregator import sql_user_daily, _weight_case, _positive_filter
+print("Weight CASE expression:")
+print(_weight_case())
+print()
+print("Positive filter:")
+print(_positive_filter())
+print()
+print("Sample SQL (truncated):")
+sql = sql_user_daily("C:/data/*.parquet", "out.parquet", "2025-11-09", "2026-04-09")
+print(sql[:600])

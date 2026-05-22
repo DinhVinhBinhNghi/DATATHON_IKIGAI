@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+.env
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Local configs (chứa hardcoded paths cá nhân)
+config/local.yaml
+eda/config/local.yaml
+model/config/local.yaml
+
+# Raw/private data — KHÔNG commit theo quy định BTC
+data/raw/
+data/interim/
+data/processed/
+*.parquet
+*.feather
+*.duckdb
+*.db
+*.sqlite
+*.pkl
+*.pickle
+
+# EDA runtime artifacts
+eda/logs/*
+!eda/logs/.gitkeep
+eda/outputs/*
+!eda/outputs/.gitkeep
+eda/notebooks/*.ipynb_checkpoints/
+
+# Model runtime artifacts
+model/cache/*
+!model/cache/.gitkeep
+!model/cache/**/.gitkeep
+model/logs/*
+!model/logs/.gitkeep
+model/outputs/*
+!model/outputs/.gitkeep
+model/submissions/*
+!model/submissions/.gitkeep
+
+# Archives / submissions (đã loại theo quy định)
+*.zip
+*.7z
+*.rar
+*.gz
+
+# Logs
+*.log
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/

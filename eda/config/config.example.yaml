@@ -1,0 +1,30 @@
+project:
+  name: datathon2026_final_local
+  seed: 42
+
+paths:
+  data_root: "C:/Datathon_Data"
+  clean_dir: "data/clean"
+  cache_dir: "outputs/cache"
+  table_dir: "outputs/tables"
+  figure_dir: "outputs/figures"
+  model_dir: "outputs/models"
+  submission_dir: "submissions"
+
+data:
+  train_end_date: "2026-04-09"
+  train_end_ts: "2026-04-10 00:00:00"
+  predict_start: "2026-04-10"
+  predict_end: "2026-05-07"
+
+positive_events:
+  - view_phone
+  - contact_chat
+  - other_interaction
+  - contact_zalo
+  - contact_sms
+
+duckdb:
+  threads: 4
+  memory_limit: "8GB"
+  temp_directory: "tmp/duckdb_tmp"

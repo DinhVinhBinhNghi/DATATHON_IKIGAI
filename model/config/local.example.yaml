@@ -1,0 +1,119 @@
+# ============================================================================
+# Datathon 2026 v3.0 — Config example
+# Copy file này sang config/local.yaml và sửa paths cho máy của bạn:
+#     copy config\local.example.yaml config\local.yaml
+# ============================================================================
+
+# ---------- Paths ----------
+paths:
+  # Raw data từ BTC — sửa nếu data ở chỗ khác
+  raw_root: "C:/Datathon_Data"
+  # Cache trung gian (sẽ tạo nếu chưa có)
+  cache_root: "./cache"
+  # Output submissions, evaluation tables
+  submissions_root: "./submissions"
+  outputs_root: "./outputs"
+  logs_root: "./logs"
+
+# ---------- Time windows ----------
+# Train period (BTC định nghĩa): 09/11/2025 → 09/04/2026
+# Ground truth period (BTC giữ kín): 10/04/2026 → 07/05/2026
+windows:
+  train_start: "2025-11-09"
+  train_end:   "2026-04-09"   # cutoff cho predict candidates
+  # Internal GT để eval local: 28 ngày cuối train, mimic test window
+  internal_gt_start: "2026-03-13"
+  internal_gt_end:   "2026-04-09"
+  # Training cutoff (predict candidates dùng data trước ngày này khi train ranker)
+  ranker_train_cutoff: "2026-03-12"
+
+# ---------- Event weighting (CORE của v3.0) ----------
+# Lý do: other_interaction chiếm 94% positive events nhưng là noise engagement.
+# Hard contacts (view_phone, chat, zalo, sms) là tín hiệu lead-gen thật.
+weights:
+  hard_contact: 3.0       # view_phone, contact_chat, contact_zalo, contact_sms
+  other_interaction: 1.0  # engagement implicit
+  pageview: 0.0           # browsing, không phải positive
+
+# ---------- Popularity sources ----------
+popularity:
+  # Window cho pop calculation: 30 ngày cuối train (sát test window)
+  window_days: 30
+  # Number of top items mỗi source
+  top_n_global: 500
+  top_n_per_city_category: 100
+  top_n_per_category: 200
+  top_n_fresh: 200
+  # Fresh listings: items posted ≤ fresh_age_days
+  fresh_age_days: 14
+
+# ---------- Co-visit ----------
+covisit:
+  lookback_days: 60         # Window lookback từ cutoff
+  time_window_hours: 24     # Time window co-occurrence
+  top_k_neighbors: 50       # Top-K neighbors per item
+  min_pair_count: 2         # Min pair count để keep
+  half_life_days: 14.0      # Time decay half-life
+
+# ---------- Candidate generation ----------
+candidates:
+  top_k_per_user: 200       # Top-K candidates per user (impact recall ceiling)
+  # Source quotas (proportional, sẽ normalize)
+  source_quotas:
+    reengagement: 50        # items user đã interact (highest priority)
+    covisit: 80             # item-item từ user history
+    category_pop: 30        # weighted pop in user's top category
+    city_cat_pop: 20        # weighted pop in (user_city × category)
+    global_pop: 20          # fallback cho cold users
+  recency_window_days: 14   # Recency window cho features
+
+# ---------- Ranker (LightGBM LambdaRank) ----------
+ranker:
+  objective: "lambdarank"
+  metric: "ndcg"
+  ndcg_at: [5, 10, 20]
+  num_leaves: 63
+  max_depth: -1
+  learning_rate: 0.05
+  feature_fraction: 0.9
+  bagging_fraction: 0.8
+  bagging_freq: 5
+  min_child_samples: 20
+  num_iterations: 1000
+  early_stopping: 50
+  num_threads: 0            # auto-detect
+  # Negative sampling
+  neg_per_pos: 10
+  # Train/val split
+  val_ratio: 0.1
+  random_seed: 42
+
+# ---------- Rerank (optional, chạy sau ranker) ----------
+rerank:
+  enabled: true
+  modes: ["raw", "rerank"]  # raw = no rerank; rerank = full marketplace-aware
+  top_k_final: 10
+  max_items_per_seller: 2   # cap diversity per seller
+  fresh_boost_days: 7
+  fresh_boost_factor: 1.10
+  longtail_min_slots: 1
+
+# ---------- Submission ----------
+submission:
+  top_k_final: 10
+  # Fallback strategy cho users không đủ 10 candidates
+  fallback_to_global_pop: true
+
+# ---------- DuckDB ----------
+duckdb:
+  memory_limit: "6GB"
+  threads: 4
+  temp_directory: null      # null → dùng default OS temp
+
+# ---------- Logging ----------
+logging:
+  level: "INFO"
+  fmt: "[%(asctime)s] %(levelname)s %(name)s: %(message)s"
+  datefmt: "%H:%M:%S"
+
+

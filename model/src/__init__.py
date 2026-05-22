@@ -1,0 +1,1 @@
+"""Datathon 2026 v3.0 — Recommender pipeline với weighted event scoring."""

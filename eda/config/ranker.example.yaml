@@ -1,0 +1,53 @@
+# Ranker + Re-ranker config — Datathon 2026 Chợ Tốt BĐS
+#
+# Copy file này sang `config/ranker.yaml` (không có .example) rồi sửa values.
+# Script `08_train_ranker.py` và `09_run_variants.py` sẽ tự load nếu tồn tại.
+#
+# Xem DECISIONS_NEEDED.md để hiểu rationale của các default.
+
+ranker:
+  # ---- Data ----
+  n_negatives_per_pos: 10           # Số negative samples mỗi positive pair
+  min_user_positives: 1             # Bỏ users < N positives trong training
+  holdout_start: "2026-04-03"       # 7 ngày cuối train window làm local holdout
+  holdout_end: "2026-04-09"
+
+  # ---- LGB hyperparams ----
+  objective: "lambdarank"
+  metric: "ndcg"
+  eval_at: [10]
+  n_estimators: 500
+  learning_rate: 0.05
+  num_leaves: 63
+  max_depth: -1
+  min_child_samples: 20
+  feature_fraction: 0.85
+  bagging_fraction: 0.85
+  bagging_freq: 5
+  lambda_l2: 1.0
+  seed: 42
+  early_stopping_rounds: 30
+
+  # ---- Categorical features (LGB native) ----
+  categorical_features:
+    - i_category
+    - i_ad_type
+    - i_seller_type
+
+rerank:
+  # Top-K candidates đem vào rerank (sau đó cắt còn final_k)
+  candidate_k: 30
+  final_k: 10
+
+  # 1. Cap items per seller — chống over-exposure 1 seller
+  enable_seller_cap: true
+  max_items_per_seller: 3
+
+  # 2. Fresh listing boost — phục vụ insight A3.3 + marketplace health
+  enable_fresh_boost: true
+  fresh_days: 7
+  fresh_boost_factor: 1.05
+
+  # 3. Private seller floor — phục vụ insight A3.2 (private CR cao)
+  enable_private_floor: true
+  private_floor_pct: 30.0

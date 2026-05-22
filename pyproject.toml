@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "datathon2026-ikigai"
+version = "1.0.0"
+description = "Team IKIGAI submission cho Datathon 2026 Final — Chợ Tốt BĐS Recommender"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Đinh Vĩnh Bình Nghi" },
+    { name = "Nguyễn Thanh Ngân" }
+]
+
+[tool.pytest.ini_options]
+testpaths = ["model/tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = "-v --tb=short"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["eda*", "model*"]
+exclude = ["data*", "docs*"]
