@@ -214,8 +214,8 @@ Validator có sẵn ở `model/src/submission/validator.py`.
 
 ## Team
 
-**Đinh Vĩnh Bình Nghi** — lead pipeline engineering (candidate generation + ranker + rerank).
-**Nguyễn Thanh Ngân** — lead EDA + storyline + report writing.
+**Đinh Vĩnh Bình Nghi** — lead EDA + storyline + report writing.
+**Nguyễn Thanh Ngân** — lead pipeline engineering (candidate generation + ranker + rerank).
 
 ---
 
