@@ -128,8 +128,8 @@ Output: `eda/outputs/figures/{main,appendix,slides}/`.
 | Metric | Value | Note |
 |---|---|---|
 | **Internal val NDCG@10** | 0.6927 | 28-day holdout (13/03 - 09/04) mimic test window |
-| **Kaggle Public LB** | [điền sau khi nộp] | Tính trên 5% ground truth |
-| **Kaggle Private LB** | [BTC công bố 22/05] | Final ranking |
+| **Kaggle Public LB** | 0.1447 | Tính trên 5% ground truth |
+| **Kaggle Private LB** | 0.1448 | Final ranking |
 
 ---
 
